@@ -1,43 +1,228 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />  
+<!-- <script>
+alert("天蓬元帥")
+alert ("給我")
+alert ("8個")
+alert ("聖杯")
+</script> -->
+<style>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+body { background: url('https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2Fpexels-photo-3565742.jpeg?alt=media&token=616f1295-9404-4a5d-a20a-aa1020d8ea26');
+}
+    .tab-container {
+      width: 100%;
+    }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    .tab-links {
+      display: flex;
+    }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    .tab-link {
+      flex: 1;
+      padding: 8px;
+      background-color: #ffd019;
+      border: none;
+      cursor: pointer;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content iframe {
+      width: 100%;
+      height: 1800px;
+      border: none;
+    }
+
+    #logFrame  {
+  /*background: linear-gradient(45deg, #ff0000, #ff0000, #ff0000, #ff0000, #ffffff, #ffffff, #ffffff, #ff0000, #ff0000);*/
+ background-size: 600% 100%;
+  position: absolute;
+   border-radius: 1%;
+   cursor: pointer;
+   animation: rainbow 1.4s linear infinite;
+  width: 100%;
+  height: 1820px;
+  overflow-y: scroll;
+  border: 22px;
+      overflow-y: scroll;
+      margin-top: 20px;
+      padding: 20px;
+  
+}
+
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+#audioPlayer {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+  
+#playButton {
+background: linear-gradient(45deg, #ff0000, #ff0000, #ff0000, #ffffff, #ffffff, #ffffff, #ffffff, #ff0000, #ffffff);
+background-size: 600% 100%;
+  position: absolute;
+   border-radius: 1%;
+   cursor: pointer;
+   animation: rainbow 10s linear infinite;
+  position: absolute;
+  top: 900px;
+  left: 600px;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2Fvideoplay.png?alt=media&token=222561cc-90a3-426c-af4d-b5cb45bb851e");
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  outline: none;
+  border-radius: 100%; 
+}
+
+    @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+  </style>
+<!--<img src="https://firebasestorage.googleapis.com/v0/b/wide-retina-407121.appspot.com/o/shell%2FKcg%2FIu%2FGIF_20240401181559579.gif?alt=media&token=ef8ece25-4ed1-4972-8b9b-358957d7ddeb" height="250" width="967" 
+</center> -->
+</head>
+<body>
+
+
+<div id="audioPlayer">
+ <audio id="myAudio" loop>
+</audio>
+  <button id="playButton"></button>
+</div>
+
+<script>
+
+var audioPlayer = document.getElementById("audioPlayer");
+var audio = document.getElementById("myAudio");
+var playButton = document.getElementById("playButton");
+var isDragging = false;
+var initialX = 0;
+var initialY = 0;
+
+var audioFiles = [
+  "https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2F4.mp3?alt=media&token=80b407e5-d7bb-4bb1-8d37-5ad8d382d59d",
+  "https://firebasestorage.googleapis.com/v0/b/wide-retina-407121.appspot.com/o/car%2F%E5%B8%8C%E6%9C%9B%E4%BD%A0.mp3?alt=media&token=5df8a133-210a-4a00-801e-e788a48f8e3a",
+  "https://example.com/audio3.mp3"
+];
+
+var currentAudioIndex = 0;
+
+audio.src = audioFiles[currentAudioIndex];
+
+playButton.addEventListener("click", function() {
+  if (audio.paused) {
+    audio.play();
+    playButton.textContent = "";
+  } else {
+    audio.pause();
+    playButton.textContent = "";
+  }
+});
+
+audio.addEventListener("ended", function() {
+  currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
+  audio.src = audioFiles[currentAudioIndex];
+  audio.play();
+});
+
+playButton.addEventListener("touchstart", function(event) {
+  isDragging = true;
+  initialX = event.touches[0].clientX - audioPlayer.offsetLeft;
+  initialY = event.touches[0].clientY - audioPlayer.offsetTop;
+});
+
+playButton.addEventListener("touchmove", function(event) {
+  if (isDragging) {
+    event.preventDefault();
+    var offsetX = event.touches[0].clientX - initialX;
+    var offsetY = event.touches[0].clientY - initialY;
+    audioPlayer.style.left = offsetX + "px";
+    audioPlayer.style.top = offsetY + "px";
+  }
+});
+</script>
+ 
+  <script>
+    function openTab(event, tabName) {
+      var i, tabContent, tabLinks;
+
+      tabContent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+      }
+
+      tabLinks = document.getElementsByClassName("tab-link");
+      for (i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+      }
+
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+    }
+  </script>
+
+  <div class="tab-container">
+    <div class="tab-links">
+      
+<button class="tab-link" onclick="openTab(event, 'page1')">1</button>
+      
+
+<button class="tab-link" onclick="openTab(event, 'page2')">2</button>
+      
+
+<button class="tab-link" onclick="openTab(event, 'page3')">3</button>
+
+<button class="tab-link" onclick="openTab(event, 'page4')">4</button>
+
+      
+
+</div>
+    
+<div id="page1" class="tab-content">
+<iframe src="https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2F%E5%A4%960.html?alt=media&token=e497efc1-bc1a-4639-81e8-d731ef2cdb44">
+</iframe>
+</div>
+
+    
+<div id="page2" class="tab-content">
+<iframe src="https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2F%E5%A4%961.html?alt=media&token=47e42cc1-8f5a-4c47-b130-3dfdad0f4b69">
+</iframe>
+</div>
+
+<div id="page3" class="tab-content">     
+<iframe src="https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2F%E5%A4%962.html?alt=media&token=11e7a65e-1958-4165-afc1-751e9c074da0">
+</iframe>    
+</div>
+
+<div id="page4" class="tab-content">     
+<iframe src="https://firebasestorage.googleapis.com/v0/b/ace-mission-379007.appspot.com/o/htm%2F%E5%A4%963.html?alt=media&token=c35c0958-6702-4d80-8453-4728a6f09f6a">
+</iframe>    
+</div>
+
+    
+
+</div>
+</body>
 </html>
